@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Controle do Robô</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Robô Equilibrista</h1>
+        <button id="connectBtn" class="btn primary">Conectar Bluetooth</button>
+        <p id="statusTxt">Status: Desconectado</p>
+    </header>
+
+    <main id="controlPanel" class="disabled">
+        <section class="card">
+            <h2>Ajuste PID</h2>
+            <div class="slider-group">
+                <label for="sliderP">Proporcional (P): <span id="valP">0</span></label>
+                <input type="range" id="sliderP" min="0" max="5000" value="0">
+            </div>
+            
+            <div class="slider-group">
+                <label for="sliderI">Integral (I): <span id="valI">0</span></label>
+                <input type="range" id="sliderI" min="0" max="5000" value="0">
+            </div>
+            
+            <div class="slider-group">
+                <label for="sliderD">Derivada (D): <span id="valD">0</span></label>
+                <input type="range" id="sliderD" min="0" max="5000" value="0">
+            </div>
+            
+            <button id="resetPidBtn" class="btn danger">Zerar PID</button>
+        </section>
+
+        <section class="card">
+            <h2>Ângulo Alvo (Equilíbrio)</h2>
+            <div class="angle-control">
+                <button id="btnMinus" class="btn secondary angle-btn">-</button>
+                <div class="angle-display">
+                    <span id="angleVal">0.0</span>°
+                </div>
+                <button id="btnPlus" class="btn secondary angle-btn">+</button>
+            </div>
+            <p class="hint">Altera 0.1° por clique</p>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
