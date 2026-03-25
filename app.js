@@ -1,5 +1,6 @@
 const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
 const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
 
 let bluetoothDevice;
 let txCharacteristic;
@@ -52,6 +53,11 @@ connectBtn.addEventListener('click', async () => {
 
         statusTxt.innerText = '● Conectando TX...';
         txCharacteristic = await service.getCharacteristic(UART_TX_CHARACTERISTIC_UUID);
+
+        statusTxt.innerText = '● Conectando RX...';
+        const rxCharacteristic = await service.getCharacteristic(UART_RX_CHARACTERISTIC_UUID);
+        await rxCharacteristic.startNotifications();
+        rxCharacteristic.addEventListener('characteristicvaluechanged', handleReceive);
 
         statusTxt.innerText = '● Conectado';
         statusTxt.classList.add('status-connected');
@@ -168,3 +174,21 @@ btnMinus.addEventListener('click', () => {
 
 angleVal.style.transition = 'transform 0.15s ease-out';
 angleVal.style.display = 'inline-block';
+
+let incomingBuffer = "";
+function handleReceive(event) {
+    const chunk = new TextDecoder().decode(event.target.value);
+    incomingBuffer += chunk;
+    
+    let newlineIndex;
+    while ((newlineIndex = incomingBuffer.indexOf('\n')) !== -1) {
+        const line = incomingBuffer.substring(0, newlineIndex).trim();
+        incomingBuffer = incomingBuffer.substring(newlineIndex + 1);
+        
+        if (line.startsWith('Angulo:')) {
+            const angStr = line.replace('Angulo:', '').trim();
+            const displayCode = document.getElementById('currentAngleDisplay');
+            if (displayCode) displayCode.innerText = angStr + '°';
+        }
+    }
+}
