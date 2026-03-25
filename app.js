@@ -90,17 +90,55 @@ async function sendCommand(commandStr) {
 
 function handleSlider(slider, valElement, prefix) {
     slider.addEventListener('input', () => {
-        valElement.innerText = slider.value;
+        valElement.innerText = Number(slider.value).toFixed(1).replace('.0', '');
     });
 
     slider.addEventListener('change', () => {
-        sendCommand(prefix + slider.value);
+        sendCommand(prefix + Number(slider.value).toFixed(1));
     });
 }
 
 handleSlider(sliderP, valP, 'P');
 handleSlider(sliderI, valI, 'I');
 handleSlider(sliderD, valD, 'D');
+
+function setupFineTuning(btnMinusId, btnPlusId, sliderId, valId, prefix, stepAmount) {
+    const btnMinus = document.getElementById(btnMinusId);
+    const btnPlus = document.getElementById(btnPlusId);
+    const slider = document.getElementById(sliderId);
+    const valElement = document.getElementById(valId);
+
+    function updateValue(delta) {
+        if(controlPanel.classList.contains('disabled')) return;
+        
+        let current = parseFloat(slider.value);
+        let next = current + delta;
+        let min = parseFloat(slider.min);
+        let max = parseFloat(slider.max);
+        
+        if (next < min) next = min;
+        if (next > max) next = max;
+        
+        slider.value = next;
+        
+        let formattedStr = Number(next.toFixed(1)).toString();
+        valElement.innerText = formattedStr; 
+        sendCommand(prefix + formattedStr);
+        
+        valElement.style.transform = 'scale(1.25)';
+        setTimeout(() => { valElement.style.transform = 'scale(1)'; }, 150);
+    }
+
+    btnMinus.addEventListener('click', () => updateValue(-stepAmount));
+    btnPlus.addEventListener('click', () => updateValue(stepAmount));
+    
+    valElement.style.transition = 'transform 0.15s ease-out';
+    valElement.style.display = 'inline-block';
+}
+
+setupFineTuning('btnMinusP', 'btnPlusP', 'sliderP', 'valP', 'P', 5.0);
+setupFineTuning('btnMinusI', 'btnPlusI', 'sliderI', 'valI', 'I', 0.1);
+setupFineTuning('btnMinusD', 'btnPlusD', 'sliderD', 'valD', 'D', 0.1);
 
 resetPidBtn.addEventListener('click', () => {
     sliderP.value = 0; valP.innerText = "0"; sendCommand("P0");
