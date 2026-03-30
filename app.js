@@ -22,7 +22,7 @@ const angleVal = document.getElementById('angleVal');
 const btnPlus = document.getElementById('btnPlus');
 const btnMinus = document.getElementById('btnMinus');
 
-let currentAngle = 0.0;
+let currentAngle = 90.0;
 
 connectBtn.addEventListener('click', async () => {
     if (bluetoothDevice && bluetoothDevice.gatt.connected) {
@@ -189,6 +189,15 @@ function handleReceive(event) {
             const angStr = line.replace('Angulo:', '').trim();
             const displayCode = document.getElementById('currentAngleDisplay');
             if (displayCode) displayCode.innerText = angStr + '°';
+        } else if (line.startsWith('Conectado!')) {
+            const parts = line.split(' ');
+            parts.forEach(p => {
+                const [cmd, val] = p.split(':');
+                if (cmd === 'P') { sliderP.value = val; valP.innerText = val; }
+                else if (cmd === 'I') { sliderI.value = val; valI.innerText = val; }
+                else if (cmd === 'D') { sliderD.value = val; valD.innerText = val; }
+                else if (cmd === 'A') { currentAngle = parseFloat(val); angleVal.innerText = val; }
+            });
         }
     }
 }
