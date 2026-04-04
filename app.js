@@ -23,6 +23,8 @@ const btnPlus = document.getElementById('btnPlus');
 const btnMinus = document.getElementById('btnMinus');
 
 let currentAngle = 90.0;
+let kal_q = 0.001;
+let kal_r = 0.300;
 
 connectBtn.addEventListener('click', async () => {
     if (bluetoothDevice && bluetoothDevice.gatt.connected) {
@@ -171,6 +173,33 @@ btnMinus.addEventListener('click', () => {
     currentAngle -= 0.1;
     updateAngleDisplay();
 });
+
+// Lógica de Botões para Kalman
+function setupKalmanBtn(id, prefix, step) {
+    const btnMinus = document.getElementById(`btnMinus${id}`);
+    const btnPlus = document.getElementById(`btnPlus${id}`);
+    const display = document.getElementById(`display${id}`);
+    const valLabel = document.getElementById(`val${id}`);
+
+    function update(delta) {
+        if(controlPanel.classList.contains('disabled')) return;
+        let val = (id === 'Q') ? kal_q : kal_r;
+        val += delta;
+        if (val < 0) val = 0;
+        if (id === 'Q') kal_q = val; else kal_r = val;
+        
+        let str = val.toFixed(3);
+        display.innerText = str;
+        valLabel.innerText = str;
+        sendCommand(prefix + str);
+    }
+
+    btnMinus.onclick = () => update(-step);
+    btnPlus.onclick = () => update(step);
+}
+
+setupKalmanBtn('Q', 'Q', 0.01);
+setupKalmanBtn('R', 'R', 0.01);
 
 angleVal.style.transition = 'transform 0.15s ease-out';
 angleVal.style.display = 'inline-block';
