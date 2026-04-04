@@ -144,7 +144,7 @@ function setupFineTuning(btnMinusId, btnPlusId, sliderId, valId, prefix, stepAmo
     valElement.style.display = 'inline-block';
 }
 
-setupFineTuning('btnMinusP', 'btnPlusP', 'sliderP', 'valP', 'P', 5.0);
+setupFineTuning('btnMinusP', 'btnPlusP', 'sliderP', 'valP', 'P', 0.1);
 setupFineTuning('btnMinusI', 'btnPlusI', 'sliderI', 'valI', 'I', 0.1);
 setupFineTuning('btnMinusD', 'btnPlusD', 'sliderD', 'valD', 'D', 0.1);
 
