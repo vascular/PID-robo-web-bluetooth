@@ -129,7 +129,8 @@ function setupFineTuning(btnMinusId, btnPlusId, sliderId, valId, prefix, stepAmo
         
         slider.value = next;
         
-        let formattedStr = Number(next.toFixed(1)).toString();
+        let precision = (prefix === 'Q' || prefix === 'R' || prefix === 'D') ? 2 : 1;
+        let formattedStr = next.toFixed(precision);
         valElement.innerText = formattedStr; 
         sendCommand(prefix + formattedStr);
         
@@ -146,7 +147,7 @@ function setupFineTuning(btnMinusId, btnPlusId, sliderId, valId, prefix, stepAmo
 
 setupFineTuning('btnMinusP', 'btnPlusP', 'sliderP', 'valP', 'P', 0.1);
 setupFineTuning('btnMinusI', 'btnPlusI', 'sliderI', 'valI', 'I', 0.1);
-setupFineTuning('btnMinusD', 'btnPlusD', 'sliderD', 'valD', 'D', 0.1);
+setupFineTuning('btnMinusD', 'btnPlusD', 'sliderD', 'valD', 'D', 0.01);
 
 resetPidBtn.addEventListener('click', () => {
     sliderP.value = 0; valP.innerText = "0"; sendCommand("P0");
