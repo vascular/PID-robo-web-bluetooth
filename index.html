@@ -86,25 +86,7 @@
                 </div>
             </div>
 
-            <div class="card glass-panel slider-card">
-                <h2>Filtro Kalman</h2>
-                <div class="slider-group">
-                    <label>Q (Process Noise) <span id="valQ">0.001</span></label>
-                    <div class="slider-controls">
-                        <button id="btnMinusQ" class="btn-micro ripple">-</button>
-                        <div class="param-value-box"><span id="displayQ">0.001</span></div>
-                        <button id="btnPlusQ" class="btn-micro ripple">+</button>
-                    </div>
-                </div>
-                <div class="slider-group">
-                    <label>R (Sensor Noise) <span id="valR">0.300</span></label>
-                    <div class="slider-controls">
-                        <button id="btnMinusR" class="btn-micro ripple">-</button>
-                        <div class="param-value-box"><span id="displayR">0.300</span></div>
-                        <button id="btnPlusR" class="btn-micro ripple">+</button>
-                    </div>
-                </div>
-            </div>
+
 
             <div class="card glass-panel angle-card">
                 <h2>Ângulo Alvo (Offset)</h2>
@@ -118,6 +100,9 @@
                 <div style="margin-top: 15px; font-size: 15px; color: var(--text-muted); background: rgba(0,0,0,0.2); padding: 10px; border-radius: 12px; display: flex; justify-content: center; align-items: center;">
                     Ângulo Atual: <span id="currentAngleDisplay" style="color: var(--secondary); font-weight: 700; font-size: 18px; margin-left: 8px;">--°</span>
                 </div>
+                <button id="calibrateBtn" class="btn secondary glowing-btn" style="margin-top: 15px; background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: #10b981;">
+                    GRAVAR ÂNGULO ATUAL COMO ALVO
+                </button>
             </div>
         </main>
     </div>
