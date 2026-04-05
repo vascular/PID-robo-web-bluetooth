@@ -21,6 +21,7 @@ const resetPidBtn = document.getElementById('resetPidBtn');
 const angleVal = document.getElementById('angleVal');
 const btnPlus = document.getElementById('btnPlus');
 const btnMinus = document.getElementById('btnMinus');
+const calibrateBtn = document.getElementById('calibrateBtn');
 
 let currentAngle = 90.0;
 let kal_q = 0.001;
@@ -173,6 +174,12 @@ btnPlus.addEventListener('click', () => {
 btnMinus.addEventListener('click', () => {
     currentAngle -= 0.1;
     updateAngleDisplay();
+});
+
+calibrateBtn.addEventListener('click', () => {
+    sendCommand("Z");
+    calibrateBtn.innerText = "✓ ÂNGULO GRAVADO!";
+    setTimeout(() => { calibrateBtn.innerText = "GRAVAR ÂNGULO ATUAL COMO ALVO"; }, 2000);
 });
 
 // Lógica de Botões para Kalman
